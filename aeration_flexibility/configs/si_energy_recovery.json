@@ -1,0 +1,55 @@
+{
+  "summer_config_template": [
+    {
+      "multiplier": 1.5,
+      "smoothing": 1.0
+    }
+  ],
+  "upgrade_keys": {
+    "air__compressor": [
+      "compressor__gas_tank__0",
+      "compressor__gas_tank__0.25",
+      "compressor__gas_tank__0.5"
+    ],
+    "o2__psa": [],
+    "o2__cryo": []
+  },
+  "tariff_keys_to_run": [
+    "0.0__cas_d1.0_e1.0_w0"
+  ],
+  "facility": {
+    "data_name": "cas",
+    "scale_mgd": 1.0,
+    "plant_capacity_mgd": 13.5
+  },
+  "design_space": {
+    "o2_range": [
+      0.1,
+      48.0
+    ],
+    "comp_ratio_range": [
+      10.0,
+      700.0
+    ],
+    "charge_power_ratio_range": [
+      0.01,
+      2.0
+    ],
+    "designs_per_run": 16,
+    "max_iterations": 20,
+    "n_jobs": 30,
+    "horizon_days": 8
+  },
+  "script_settings": {
+    "paper_figures": {
+      "recovery_efficiency_scatter.png": "si/fig_s14_energy_recovery.png"
+    },
+    "run_solve_optimization": true,
+    "run_plotting": true,
+    "fig_2": false,
+    "fig4": false,
+    "fig3": false,
+    "si_solar": false,
+    "si_nu_rec": true
+  }
+}

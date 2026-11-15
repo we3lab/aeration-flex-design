@@ -1,0 +1,8 @@
+upgrade_type,equipment,lifetime-years,source
+compressor__gas_tank,compressor,15,
+compressor__gas_tank,gas-tank,20,
+none__liquid_tank,liquid-tank,30,https://buyersguide.gawdamedia.com/article/cryogenic-bulk-tank-rehab-refurbishment.html
+none__gas_tank,gas-tank,20,https://scholarworks.indianapolis.iu.edu/server/api/core/bitstreams/4c6e7995-0146-4301-b839-bf9cb355be63/content
+elec__gas_tank,elec,20,https://apps.epri.com/lcri-electrolysis-tea/en/assumptions.html
+elec__gas_tank,gas-tank,20,https://scholarworks.indianapolis.iu.edu/server/api/core/bitstreams/4c6e7995-0146-4301-b839-bf9cb355be63/content
+none__battery,battery,15,https://docs.nrel.gov/docs/fy17osti/67102.pdf

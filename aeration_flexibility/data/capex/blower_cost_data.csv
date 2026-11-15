@@ -1,0 +1,9 @@
+max_power,max_flow_scfm,cost_usd,year,label,source
+1890,,1030000,2019,Portland (internally geared),https://www.newea.org/wp-content/uploads/2019/02/AC19_BLevin_19.pdf
+1890,,730000,2019,Portland (multistage),https://www.newea.org/wp-content/uploads/2019/02/AC19_BLevin_19.pdf
+1890,,1010000,2019,Portland (w VFDs),https://www.newea.org/wp-content/uploads/2019/02/AC19_BLevin_19.pdf
+341,6930,312720,2019,McIlvaine (multistage),https://home.mcilvainecompany.com/images/MW_Blower_True_Costs_2019-08-19.pdf
+305,6930,440400,2019,McIlvaine (turbo),https://home.mcilvainecompany.com/images/MW_Blower_True_Costs_2019-08-19.pdf
+359,6930,373200,2019,McIlvaine (displacement),https://home.mcilvainecompany.com/images/MW_Blower_True_Costs_2019-08-19.pdf
+224,6100,222237,2019,Vancouver (turbo),https://vancouvercity.novusagenda.com/agendapublic/CoverSheet.aspx?ItemID=943&MeetingID=137
+250,,189527,2022,Redding (displacement),https://records.ci.redding.ca.us/Public/DocView.aspx?id=229854&dbid=0&repo=General&cr=1

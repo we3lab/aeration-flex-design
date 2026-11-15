@@ -1,0 +1,38 @@
+{
+  "summer_config_template": [
+    {
+      "multiplier": 1.5,
+      "smoothing": 1.0
+    }
+  ],
+  "upgrade_keys": {
+    "air__compressor": [],
+    "o2__psa": [
+      "none__gas_tank__0"
+    ],
+    "o2__cryo": []
+  },
+  "tariff_keys_to_run": [
+    "0.0__hpoas_d1.0_e1.0_w0"
+  ],
+  "facility": {
+    "data_name": "hpoas",
+    "scale_mgd": 1.1,
+    "plant_capacity_mgd": 65.0
+  },
+  "design_space": {
+    "max_iterations": 1,
+    "n_jobs": 20,
+    "horizon_days": 8,
+    "decomposition_type": "binary_big_M",
+    "design_point": [0.05, 10.0, 0.3, 1.0]
+  },
+  "script_settings": {
+    "run_solve_optimization": true,
+    "run_plotting": false,
+    "fig_2": false,
+    "fig4": false,
+    "fig3": false,
+    "si_solar": false
+  }
+}

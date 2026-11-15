@@ -1,0 +1,45 @@
+{
+  "source_run": "fig2_fig3_cas_data_cas_tariff",
+  "upgrade_keys": {
+    "air__compressor": [
+      "compressor__gas_tank__0"
+    ],
+    "o2__psa": [
+      "none__gas_tank__0"
+    ],
+    "o2__cryo": [
+      "none__liquid_tank__0"
+    ]
+  },
+  "sweep_ranges": {
+    "peak_window": [-1.0, 1.0, 7],
+    "charge_factor": [0.8, 1.2, 7],
+    "o2_multiplier": [1.2, 1.8, 7],
+    "smoothing": [0.8, 1.2, 7],
+    "capex": [0.8, 1.2, 7]
+  },
+  "facility": {
+    "data_name": "cas",
+    "scale_mgd": 1.0,
+    "plant_capacity_mgd": 13.5
+  },
+  "design_space": {
+    "designs_per_run": 1,
+    "max_iterations": 1,
+    "n_jobs": 30,
+    "horizon_days": 8
+  },
+  "script_settings": {
+    "paper_figures": {
+      "fig4.png": "fig_4_sensitivity.png",
+      "billing_sensitivity_scatter.png": "si/fig_s12_billing_sensitivity.png"
+    },
+    "run_solve_optimization": true,
+    "save_necessary_only": true,
+    "run_plotting": true,
+    "fig_2": false,
+    "fig3": false,
+    "fig4": true,
+    "si_solar": false
+  }
+}

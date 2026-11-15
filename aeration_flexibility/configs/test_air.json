@@ -1,0 +1,37 @@
+{
+  "summer_config_template": [
+    {
+      "multiplier": 1.5,
+      "smoothing": 1.0
+    }
+  ],
+  "upgrade_keys": {
+    "air__compressor": [],
+    "o2__psa": [
+      "none__gas_tank__0"
+    ],
+    "o2__cryo": []
+  },
+  "tariff_keys_to_run": [
+    "0.0__cas_d1.0_e1.0_w0"
+  ],
+  "facility": {
+    "data_name": "cas",
+    "scale_mgd": 1.0,
+    "plant_capacity_mgd": 13.5
+  },
+  "design_space": {
+    "max_iterations": 1,
+    "n_jobs": 18,
+    "horizon_days": 30,
+    "design_point": [2.5, 19.0, 0.3, 0.7]
+  },
+  "script_settings": {
+    "run_solve_optimization": true,
+    "run_plotting": false,
+    "fig_2": false,
+    "fig4": false,
+    "fig3": false,
+    "si_solar": false
+  }
+}

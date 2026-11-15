@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "aeration-flexibility"
+abstract: "Sizing and operating oxygen, air and battery storage for flexible wastewater aeration under time-varying electricity tariffs."
+authors:
+  - given-names: "Daly"
+    family-names: "Wettermark"
+  - given-names: "Jose"
+    family-names: "Bolorinos"
+  - given-names: "Meagan S."
+    family-names: "Mauter"
+license: MIT
+repository-code: "https://github.com/we3lab/aeration-flexibility"

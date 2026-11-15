@@ -1,0 +1,25 @@
+# Machine-specific settings (copy .env.example)
+.env
+
+# Python and editor files
+__pycache__/
+.vscode/
+.DS_Store
+
+# Private facility data and scripts that read it
+aeration_flexibility/local/
+aeration_flexibility/data/facility/
+aeration_flexibility/output_plots/diagnostics/cas_2018_2020/
+
+# Solve cache and facility-derived inputs (results JSONs and plots stay tracked)
+aeration_flexibility/output_data/intermediate/
+aeration_flexibility/output_data/*/*.csv
+aeration_flexibility/output_data/*/day_profiles.json
+*daily_profiles.png
+*.tif
+
+# The demo inputs are synthetic, so they are tracked
+!aeration_flexibility/output_data/demo_iwa_bsm1/*
+
+# step2_solver_compare.py temporary configs
+temp_config_horizon_*

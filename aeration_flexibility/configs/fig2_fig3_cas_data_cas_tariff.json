@@ -1,0 +1,71 @@
+{
+  "summer_config_template": [
+    {
+      "multiplier": 1.5,
+      "smoothing": 1.0
+    }
+  ],
+  "upgrade_keys": {
+    "air__compressor": [
+      "compressor__gas_tank__0",
+      "none__battery__0"
+    ],
+    "o2__psa": [
+      "elec__gas_tank__0",
+      "none__gas_tank__0",
+      "none__battery__0"
+    ],
+    "o2__cryo": [
+      "elec__gas_tank__0",
+      "none__liquid_tank__0",
+      "none__battery__0"
+    ]
+  },
+  "tariff_keys_to_run": [
+    "0.0__cas_d1.0_e1.0_w0"
+  ],
+  "facility": {
+    "data_name": "cas",
+    "scale_mgd": 1.0,
+    "plant_capacity_mgd": 13.5,
+    "aeration_basins": 4,
+    "aeration_basin_volume_mg": 8.0,
+    "aeration_basin_depth_ft": 21.0
+  },
+  "design_space": {
+    "o2_range": [
+      0.1,
+      48.0
+    ],
+    "comp_ratio_range": [
+      10.0,
+      700.0
+    ],
+    "charge_power_ratio_range": [
+      0.01,
+      2.0
+    ],
+    "designs_per_run": 16,
+    "max_iterations": 20,
+    "n_jobs": 35,
+    "horizon_days": 8
+  },
+  "script_settings": {
+    "paper_figures": {
+      "fig_2stacked_lifetime_cost.png": "fig_2_design_operation.png",
+      "fig3.png": "fig_3_hpoas_npv.png",
+      "centroid_day.png": "si/fig_s4_centroid_days.png",
+      "convergence_combined.png": "si/fig_s8_cem_search.png",
+      "si_figure_5.png": "si/fig_s16_flex_metrics.png",
+      "storage_vs_bioreactor_area.png": "si/fig_s17_storage_footprint.png"
+    },
+    "run_solve_optimization": true,
+    "save_necessary_only": true,
+    "recalculate_lifetime_cost": false,
+    "run_plotting": true,
+    "fig_2": true,
+    "fig4": false,
+    "fig3": true,
+    "si_solar": false
+  }
+}

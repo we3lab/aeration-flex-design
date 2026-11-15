@@ -11,15 +11,24 @@ aeration_flexibility/local/
 aeration_flexibility/data/facility/
 aeration_flexibility/output_plots/diagnostics/cas_2018_2020/
 
-# Solve cache and facility-derived inputs (results JSONs and plots stay tracked)
-aeration_flexibility/output_data/intermediate/
-aeration_flexibility/output_data/*/*.csv
-aeration_flexibility/output_data/*/day_profiles.json
-*daily_profiles.png
+# Facility-derived inputs, results and figures stay in the private repo. Public: demo runs, tank-cost
+# coefficients and the SI figures that need no facility data
+aeration_flexibility/output_data/*
+!aeration_flexibility/output_data/demo_iwa_bsm1/
+!aeration_flexibility/output_data/smoothed_tank_coefficients.json
+aeration_flexibility/output_plots/*
+!aeration_flexibility/output_plots/diagnostics/
+aeration_flexibility/output_plots/diagnostics/*
+!aeration_flexibility/output_plots/diagnostics/demo_iwa_bsm1/
+!aeration_flexibility/output_plots/si/
+aeration_flexibility/output_plots/si/*
+!aeration_flexibility/output_plots/si/fig_s1_hpo_map.png
+!aeration_flexibility/output_plots/si/fig_s2_energy_o2_intensity.png
+!aeration_flexibility/output_plots/si/fig_s5_gas_tank_cost.png
+!aeration_flexibility/output_plots/si/fig_s6_liquid_tank_cost.png
+!aeration_flexibility/output_plots/si/fig_s7_blower_cost.png
+!aeration_flexibility/output_plots/si/fig_s9_coeff_linearization.png
 *.tif
-
-# The demo inputs are synthetic, so they are tracked
-!aeration_flexibility/output_data/demo_iwa_bsm1/*
 
 # step2_solver_compare.py temporary configs
 temp_config_horizon_*

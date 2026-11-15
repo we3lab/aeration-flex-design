@@ -258,47 +258,8 @@ def figure_iterative_coeff_linearization():
     save_fig(fig, os.path.join(SI_PLOTS_DIR, "fig_s9_coeff_linearization.png"), dpi=300)
 
 
-def figure_raw_profiles_combined():
-    """fig_s3: stacks the CAS (A) and HPOAS (B) raw-profile images (from the private facility script) into one,
-    cropping off their clipped legends and drawing one shared legend centered on top."""
-    fig, axs = plt.subplots(2, 1, figsize=(10.5, 13.0))
-    # fig_s3b still carries its own clipped legend above row 262; fig_s3a has none
-    for ax, name, label, top in (
-        (axs[0], "fig_s3a_cas_raw_profiles.png", "A)", 0),
-        (axs[1], "fig_s3b_hpoas_raw_profiles.png", "B)", 262),
-    ):
-        img = plt.imread(os.path.join(SI_PLOTS_DIR, name))[top:]
-        # Trim the white margins around the panels
-        rows, cols = np.where(img[..., :3].min(axis=2) < 0.9)
-        ax.imshow(img[max(rows.min() - 8, 0) : rows.max() + 8, max(cols.min() - 8, 0) : cols.max() + 8])
-        ax.axis("off")
-        ax.text(0, 1, label, transform=ax.transAxes, va="top", fontsize=22)
-    # Same colors and widths as the images (ingest_data.plot_diurnal_profiles)
-    series = [
-        ("Aeration Power Load Profile", cb_palette[2], 3.5, "-"),
-        ("Virtual Demand", cb_palette[3], 2.5, "-"),
-        ("Non-Aeration Facility Load", cb_palette[0], 2.5, "-"),
-        ("Cogenerator Power Generation", cb_palette[6], 2.5, "-"),
-        ("Grid Electricity Purchases", cb_palette[7], 2.5, "-"),
-        ("Battery Power (A only)", cb_palette[4], 2.5, "-"),
-        ("Est. O₂ Demand from WW Flow (A only)", cb_palette[6], 2.5, "--"),
-    ]
-    fig.tight_layout(h_pad=0)
-    fig.legend(
-        [Line2D([], [], color=c, linewidth=w, linestyle=s) for _, c, w, s in series],
-        [label for label, _, _, _ in series],
-        loc="lower center",
-        bbox_to_anchor=(0.5, 1.0),
-        ncol=2,
-        fontsize=16,
-        frameon=False,
-    )
-    save_fig(fig, os.path.join(SI_PLOTS_DIR, "fig_s3_raw_profiles.png"), dpi=200)
-
-
 if __name__ == "__main__":
     os.makedirs(SI_PLOTS_DIR, exist_ok=True)
     figure_hpo_map()
     figure_energy_o2_intensity()
     figure_iterative_coeff_linearization()
-    figure_raw_profiles_combined()

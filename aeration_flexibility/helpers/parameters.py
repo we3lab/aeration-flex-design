@@ -64,9 +64,9 @@ rho_hpo_liquid = 1141  # density of liquid oxygen (kg/m3)
 # Air and aeration system properties
 frac_o2_air = 0.21  # Fraction of O2 in air
 frac_o2_hpo = 0.95  # Fraction of O2 in high purity oxygen
-alpha = 0.8  # correction factor to convert from clean water SOTE to wastewater
-beta = 0.9  # assumption for any additional losses or fouling of diffusers
-SOTE = {"Disc": 0.7, "Invent": 0.8}  # standard oxygen transfer efficiency (%)
+alpha = 0.55  # clean water to wastewater correction, fine pore "typically 0.5 to 0.6" (Sanitaire 2001)
+beta = 0.95  # salinity/solids correction, "0.95 to 0.99" (Sanitaire 2001)
+SOTE = {"Disc": 0.39, "Invent": 0.8}  # Disc: fine pore 2.0%/ft x ~19.5 ft submergence (Sanitaire 2001); used by the S1.3 cross-check
 
 o2_multiplier_map = {"air": 1, "o2": 0.7 / 0.6 / SOTE["Invent"]}
 
@@ -74,12 +74,9 @@ o2_multiplier_map = {"air": 1, "o2": 0.7 / 0.6 / SOTE["Invent"]}
 eta = 0.75  # mechanical (blower + motor) efficiency ηm; ×ηp = 0.60 overall, inside Sanitaire design guide 60-80% (70% typical)
 polytropic_efficiency = 0.8  # isentropic path efficiency (ηp) in polytropic compression formula
 
-# Storage compressors are multi-stage with interstage cooling (single-stage is impractical above ~5x: discharge
-# temperature/material limits); stages are sized from this conservative maximum per-stage pressure ratio.
-max_stage_pressure_ratio = 5.0
+max_stage_pressure_ratio = 5.0  # per stage of the intercooled storage compressor (discharge temperature limit)
 
-# Aeration pressure assuming disc diffusers at 18 ft submergence plus diffuser losses
-P_AER = 0.1  # MPa gauge discharge pressure for disc diffuser aeration
+P_AER = 0.1  # MPa gauge, disc diffusers at 18 ft submergence plus diffuser losses
 T_room = 20 + 273.15  # temperature in kelvin
 P_MAX_H2 = 35.0  # MPa
 
@@ -92,35 +89,26 @@ battery_min_power_kw = 100.0  # NLR ATB 2025 commercial range minimum
 battery_max_power_kw = 2000.0  # NLR ATB 2025 commercial range maximum
 battery_max_usable_hours = 8.0  # NLR ATB 2025 commercial range maximum
 
-# Battery standing self-discharge (fraction of stored energy lost per day). 0.17%/day for Li-ion,
-# Kebede et al. 2021 (Renew. Sustain. Energy Rev. 159:112213) — same value used by Bolorinos et al. 2023.
-battery_self_discharge_per_day = 0.0017
+battery_self_discharge_per_day = 0.0017  # Li-ion, Kebede et al. 2021 (Renew. Sustain. Energy Rev. 159:112213), as in Bolorinos 2023
 
-# Usable fraction of nameplate battery energy (80% depth of discharge). NREL prices usable kWh (83586 Table 9:
-# "rated (usable)", 10-90% SOC), so capex prices only this fraction of E_max.
-battery_usable_frac = 0.8
+battery_usable_frac = 0.8  # 80% depth of discharge; NREL 83586 Table 9 prices "rated (usable)" kWh (10-90% SOC)
 
-# Controller forecast error: per-timestep std of the net-demand prediction error as a fraction of net demand (Bolorinos et al.
-# 2023 eqs S16-S18 use 0.02), applied equally to baseline and optimized billed demand. 0.0 = perfect foresight.
-forecast_error_std = 0.02
+forecast_error_std = 0.02  # net-demand forecast error std as a fraction, Bolorinos 2023 eqs S16-S18; 0.0 = perfect foresight
 
 ei_psa_kg = 0.44  # kWh/kg O2. OSI Oxygen VPSA white paper (2022) https://osioxygen.com/wp-content/uploads/2022/03/VPSA-White-Paper.pdf
-# cryo OTR (2.5 lb O2/hp-h) minus the dissolution-only LOX OTR (6.5)
-ei_cryo_kg = (1 / 2.5 - 1 / 6.5) * 0.7457 / 0.4536  # kWh/kg O2. EPA 430/9-78-009 Fact Sheets 2.1.4-2.1.5. Shammas & Wang 2009 Figs 7.2/7.6
+ei_cryo_kg = (1 / 2.5 - 1 / 6.5) * 0.7457 / 0.4536  # kWh/kg O2, cryo OTR 2.5 minus LOX-only 6.5 lb O2/hp-h. EPA 430/9-78-009 FS 2.1.4-2.1.5; Shammas & Wang 2009 Figs 7.2/7.6
 ei_elec_kg = 6.25  # kWh/kg O2. IRENA 2020 Table 6 PEM stack range 47-66 kWh/kg H2 / 8
 ei_elec_mol = ei_elec_kg / 1000 * M_O2  # kwh/mol O2
 electrolyzer_max_power_kw = 20000.0 # EPRI's PEM capex
-# Feedwater purification energy, Winter et al 2022 (SI eq S29); energy-only (purification capex negligible).
-f_pretreat = 0.02
+f_pretreat = 0.02  # feedwater purification energy, Winter et al. 2022 (SI S29); its capex is negligible
 ei_psa_mol = ei_psa_kg / 1000 * M_O2  # kWh/mol O2
 ei_cryo_mol = ei_cryo_kg / 1000 * M_O2  # kWh/mol O2
 
 cryo_turndown = 0.1  # internal engineering estimate (no external source)
-compressor_turndown = 0.5  # O2 GENERATION (blower/PSA) turndown floor
+compressor_turndown = 0.5  # blower/PSA turndown floor; VPSA turns down to ~50%, https://www.linde-engineering.com/products-and-services/process-plants/adsorption-and-membrane-plants/powering-industry-with-on-site-o2-generation
 storage_compressor_min_turndown = 0.8  # when running
 
 # 14.83 KW/MGD from Howard Curren plant https://www.tampa.gov/sites/default/files/content/files/migrated/hfc_awtp_-_master_plan_-_volume_1_0.pdf.
-# VPSA turns down to ~50% and uses 30-70% less electricity than cryo: Linde https://www.linde-engineering.com/products-and-services/process-plants/adsorption-and-membrane-plants/powering-industry-with-on-site-o2-generation, OSI https://osioxygen.com/wp-content/uploads/2022/03/VPSA-White-Paper.pdf
 
 price_h2_kg = 5.0  # $/kg
 
@@ -147,31 +135,23 @@ ei_o2_map = {
     "compressor": 0,
 }
 
-# O2 latent heat of vaporization, per-molecule (diatomic). Element tables list 3.4099 kJ/mol per
-# ATOM of O, so O2 is 2x that (~213 kJ/kg). NOAA CAMEO https://cameochemicals.noaa.gov/chris/OXY.pdf
-ei_evap_kj = 6.8198  # kJ/mol
+ei_evap_kj = 6.8198  # kJ/mol O2 latent heat, 2 x 3.4099 per O atom (~213 kJ/kg), NOAA CAMEO https://cameochemicals.noaa.gov/chris/OXY.pdf
 ei_evap_kwh = ei_evap_kj / 3600  # kWh/mol (1 kWh = 3600 kJ); ~0.059 kWh/kg
 
-# Liquefying gaseous surplus O2 (PSA/electrolyzer) for bulk liquid storage: ~0.2-0.4 kWh/kg in the liquid-air energy storage
-# literature; 0.30 (below full cryo separation at 0.405, no separation step), applied to the flow charged into liquid storage.
-ei_liquefy_kg = 0.30  # kWh/kg O2
+ei_liquefy_kg = 0.30  # kWh/kg O2 to liquefy surplus PSA/elec O2; 0.2-0.4 in LAES literature, below cryo's 0.405 (no separation)
 ei_liquefy_mol = ei_liquefy_kg / 1000 * M_O2  # kWh/mol O2
 
-# Liquid AIR storage (air-blower family): ~870 kg/m3 at boiling point (https://en.wikipedia.org/wiki/Liquid_air); air liquefaction spans 0.22-0.7
-# kWh/kg (~0.2-0.3 typical LAES, Vecchi et al. 2021 https://www.sciencedirect.com/science/article/pii/S2666792421000391), so 0.30 like the LOX liquefier.
-rho_liquid_air = 870  # kg/m3
+rho_liquid_air = 870  # kg/m3 at boiling point, https://en.wikipedia.org/wiki/Liquid_air
 M_air = 28.96  # g/mol
-ei_liquefy_air_kg = 0.30  # kWh/kg air
+ei_liquefy_air_kg = 0.30  # kWh/kg air; 0.22-0.7, ~0.2-0.3 typical LAES (Vecchi et al. 2021, https://www.sciencedirect.com/science/article/pii/S2666792421000391)
 
-# Liquefaction energy per mol of O2-EQUIVALENT flow charged into bulk liquid storage: storing air liquefies the whole air
-# stream to bank its 20.9% O2, so the per-O2 burden is ~4.8x the mol-air value.
+# Liquefaction energy per O2-equivalent mol charged to liquid storage; air liquefies the whole stream (~4.8x per O2)
 ei_liquefy_mol_map = {
     "o2": ei_liquefy_mol,
     "air": ei_liquefy_air_kg / 1000 * M_air / frac_o2_air,
 }
 
-# Regasifying stored liquid: ambient-air vaporizers supply the latent heat at ~no electric cost (standard LOX practice), so all 0.
-# For ELECTRIC regas set entries to ei_evap_kwh, keyed by storage medium (it applies to any liquid storage, not the base o2_tech).
+# Ambient-air vaporizers regasify stored liquid at ~no electric cost (standard LOX practice); use ei_evap_kwh for electric regas
 ei_evap_map = {
     "psa": 0,
     "cryo": 0,

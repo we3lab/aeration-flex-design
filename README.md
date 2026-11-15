@@ -39,9 +39,9 @@ The demo sizes tank and battery storage for each base technology over one month.
 
 ## Reproducing the paper
 
-`python aeration_flexibility/step3_run_all.py` runs every paper config. The paper's result JSONs and figures are in
-`output_data/` and `output_plots/`. Re-solving needs the facility SCADA data, which is not public: `day_profiles.json`
-is gitignored for the paper configs.
+`python aeration_flexibility/step3_run_all.py` runs every paper config. It needs the facility SCADA data, which is
+not public, so the paper's inputs, result JSONs and figures are not in this repo; the configs in `configs/` document
+each run. The demo above exercises the same code on public data.
 
 Solves are cached per day in `AERATION_INTERMEDIATE_DIR/<data_name>/`, so configs on the same data reuse each other's solves.
 

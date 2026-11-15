@@ -9,6 +9,7 @@ import json
 import os
 import glob
 import re
+import shutil
 from datetime import datetime
 from collections import defaultdict
 
@@ -1425,7 +1426,7 @@ def set_hour_xaxis(ax, day_label, fontsize):
 def fig_2_function(results, output_dir, centroid_ranked_days, data_name, horizon_days):
     # Rows are the three cases (A/B/C); columns: i. schematic, ii. day profile, iii. lifetime cost;
     # legends in a 4th row. Lengths in inches so ii/iii are square; xlabel_h fits the last x label.
-    fig_w, margin, img_w, label_w = 7.0, 0.03, 1.5, 0.3
+    fig_w, margin, img_w, label_w = 7.0, 0.03, 1.5, 0.45
     col_gap, xlabel_h, note_h, legend_h = 0.85, 0.7, 0.25, 1.8
     # Each row gap carries the x label of the row above plus the storage-medium note over the cost panel
     row_gap = xlabel_h + note_h
@@ -1459,6 +1460,7 @@ def fig_2_function(results, output_dir, centroid_ranked_days, data_name, horizon
     # Column i: schematic images A-C aligned to each row's band. An image's top band (label ink ends at 9%,
     # title starts at 16%) holds only its A./B./C. label: crop it and redraw the label in the strip.
     figures_dir = os.path.join(DATA_DIR, "figures")
+    ax_images = []
     for row in range(3):
         band = ax_profile[row].get_position()
         ax_image = fig.add_axes([(margin + label_w) / fig_w, band.y0, img_w / fig_w, band.height])
@@ -1468,10 +1470,9 @@ def fig_2_function(results, output_dir, centroid_ranked_days, data_name, horizon
         # imshow shrinks the axes box to the image aspect; anchoring it north keeps the box top on the
         # row top, so "i." lands at the same height as "ii." and "iii."
         ax_image.set_anchor("N")
-        add_subplot_label(ax_image, row, x=-label_w / img_w, y=1.03, fontsize=13)
-        add_subplot_label(ax_image, row, label="i.", x=0.02, fontsize=11)
-        add_subplot_label(ax_profile[row], row, label="ii.", x=-0.29, fontsize=11)
-        add_subplot_label(ax_cost[row], row, label="iii.", x=-0.29, fontsize=11)
+        # A./B./C. sit 0.15 in left of the label strip; the tight bbox grows to fit
+        add_subplot_label(ax_image, row, x=-(label_w + 0.15) / img_w, y=1.03, fontsize=13)
+        ax_images.append(ax_image)
 
     _, _, tariff_key = parse_config_key(next(iter(results)))
     cases = [
@@ -1651,6 +1652,15 @@ def fig_2_function(results, output_dir, centroid_ranked_days, data_name, horizon
     ax_cost_legend.axis("off")
 
     fig.align_ylabels(ax_profile + ax_cost)
+    # Roman numerals sit just left of each panel's y-axis label (the schematic for i.), measured after layout
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    pad = 3 / 72 * fig.dpi
+    for row in range(3):
+        for ax, label in ((ax_images[row], "i."), (ax_profile[row], "ii."), (ax_cost[row], "iii.")):
+            left = ax.yaxis.get_tightbbox(renderer) if ax.axison else ax.get_window_extent(renderer)
+            x = ax.transAxes.inverted().transform((left.x0 - pad, 0))[0]
+            ax.text(x, 1.0, label, transform=ax.transAxes, fontsize=11, va="top", ha="right", zorder=100)
     save_fig(
         fig,
         os.path.join(output_dir, "fig_2stacked_lifetime_cost"),
@@ -1932,7 +1942,9 @@ def generate_plots(run_configs, config_values):
 
     if config_values["fig_2"]:
         si_figure_5(results, output_dir)
-        plot_storage_vs_bioreactor_volume(results, output_dir, config_values)
+        # The footprint figure needs the case-study plant's basin geometry, which only the paper config has
+        if "aeration_basin_volume_mg" in config_values:
+            plot_storage_vs_bioreactor_volume(results, output_dir, config_values)
         si_convergence_combined_figure(results, output_dir, config_values)
         with open(os.path.join(OUTPUT_DATA_DIR, run_name, "day_profiles.json")) as f:
             solved_days = json.load(f)["day_profiles"]
@@ -2002,8 +2014,8 @@ def generate_plots(run_configs, config_values):
         paper_path = os.path.join(OUTPUT_PLOTS_DIR, paper_name)
         os.makedirs(os.path.dirname(paper_path), exist_ok=True)
         for ext in (".png", ".tif"):
-            os.replace(
-                os.path.join(output_dir, os.path.splitext(diagnostic_name)[0] + ext),
-                os.path.splitext(paper_path)[0] + ext,
-            )
+            diagnostic_path = os.path.join(output_dir, os.path.splitext(diagnostic_name)[0] + ext)
+            # Copy then delete, not os.replace, so a symlinked paper path is written through
+            shutil.copyfile(diagnostic_path, os.path.splitext(paper_path)[0] + ext)
+            os.remove(diagnostic_path)
         print(f"Moved {diagnostic_name} to {paper_path} (+ .tif)")

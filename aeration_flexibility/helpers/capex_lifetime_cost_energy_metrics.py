@@ -7,9 +7,8 @@ from helpers.tank_cost import get_tank_cost_smoothed, get_liquid_tank_cost
 
 # O2 generation capex per ton-per-annum of capacity: (USD, source year)
 O2_GENERATION_COST_PER_TPA = {
-    "psa": (208, 2019),  # Tampa Bay Water Water Master Plan (Table 7.5-1)
-    # https://thundersaidenergy.com/downloads/cryogenic-air-separation-the-economics/
-    "cryo": (200, 2020),  # Thunder Said Energy cryogenic air separation economics
+    "psa": (208, 2019),  # City of Tampa Howard F. Curren Master Plan (Table 7.5-1)
+    "cryo": (200, 2020),  # Thunder Said Energy, https://thundersaidenergy.com/downloads/cryogenic-air-separation-the-economics/
 }
 
 
